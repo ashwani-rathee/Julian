@@ -1,0 +1,7 @@
+name = "pikachu"
+uuid = "f8daa2d9-7d79-41f0-b714-1c6c23f437d5"
+authors = ["Ashwani Rathee <ab669522@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Discord = "fcbf000d-02fd-53f1-af91-d952191673d3"
