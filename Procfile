@@ -1,2 +1,1 @@
-worker: julia --project=. -e 'using Pkg; Pkg.instantiate()'
-worker: julia node.jl
+web: julia --project src/pikachu.jl $PORT
