@@ -1,2 +1,2 @@
-web: julia --project=. -e 'using Pkg; Pkg.instantiate()'
-web: julia node.jl $PORT
+worker: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+worker: julia node.jl
