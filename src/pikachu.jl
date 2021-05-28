@@ -1,9 +1,11 @@
 module pikachu
 
+DISCORD_TOKEN="ODQzMDAwMTA5NzgzODQyODE2.YJ9fCA.Sq_54KDF-EY8hkAQwov_NNeb4_4"
+
 # Import Discord.jl.
 using Discord
 # Create a client.
-c = Client(ENV["DISCORD_TOKEN"]; presence=(game=(name="Julia", type=AT_GAME),))
+c = Client(DISCORD_TOKEN]; presence=(game=(name="Julia", type=AT_GAME),))
 
 # Create a handler for the MessageCreate event.
 function handler(c::Client, e::MessageCreate)
