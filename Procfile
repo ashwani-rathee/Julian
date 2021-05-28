@@ -1,1 +1,1 @@
-web: julia --project src/pikachu.jl $PORT
+web: run.sh $PORT
