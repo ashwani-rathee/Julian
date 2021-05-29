@@ -14,6 +14,11 @@ function handler(c::Client, e::MessageCreate)
     # Display the message contents.
     println("Received message: $(e.message.content)")
     # Add a reaction to the message.
+    if e.message.content == "Hello"
+    	println(e.message.channel_id)
+    	 create(c, Message, e.message.channel_id; content = "Hello Monsieur");
+    end
+    
     create(c, Reaction, e.message, '👍')
 end
 

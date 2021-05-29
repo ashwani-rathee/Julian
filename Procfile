@@ -1,1 +1,1 @@
-web: julia --project src/pikachu.jl $PORT
+web: julia --project src/julian.jl $PORT
