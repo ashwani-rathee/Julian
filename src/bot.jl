@@ -24,9 +24,8 @@ function handler(c::Client, e::MessageCreate)
         b = 1
         reply(c, e.message, "$(a+b)")
     end
-
-    data =copy(e.message.content)
-    if data[1:8] == "good boy"
+    
+    if e.message.content == "good boy"
         create(c, Reaction, e.message, '👍')
     end
 
