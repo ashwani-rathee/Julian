@@ -1,2 +1,1 @@
-
-worker: julia --project src/bot.jl 
+worker: julia ./src/bot.jl 
