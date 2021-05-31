@@ -1,15 +1,11 @@
 
-DISCORD_TOKEN = "ODQzMDAwMTA5NzgzODQyODE2.YJ9fCA.C_N_lAz-uyTXC7O9GS-Klwfr8pk"
-
 using InteractiveUtils
 using UnicodePlots
 # Import Discord.jl.
 using Discord
 # Create a client.
-c = Client(DISCORD_TOKEN; presence = (game = (name = "Julia", type = AT_GAME),))
+c = Client(ENV["DISCORD_TOKEN"]; presence = (game = (name = "Julia", type = AT_GAME),))
 
-# Set this environment variable or replace with your own guild ID.
-const GUILD = parse(Discord.Snowflake, get(ENV, "DISCORD_GUILD_ID", "716892266366500875"))
 # Create a handler for the MessageCreate event.
 function handler(c::Client, e::MessageCreate)
     # Display the message contents.
