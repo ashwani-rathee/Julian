@@ -12,8 +12,20 @@ function handler(c::Client, e::MessageCreate)
     println("Received message: $(e.message.content)")
     # Add a reaction to the message.
     if e.message.content == "Hello"
-        println(e.message.channel_id)
+        # println(e.message.channel_id)
         reply(c, e.message, "Hey Monsieur!!")
+        #  create(c, Message, e.message.channel_id; content = "Hello Monsieur");
+    end
+
+    if e.message.content == "I failed."
+        # println(e.message.channel_id)
+        reply(c, e.message, "Why do we fall sir? So that we can learn to pick ourselves up.")
+        #  create(c, Message, e.message.channel_id; content = "Hello Monsieur");
+    end
+
+    if e.message.content =="You still haven't given up on me?"
+        # println(e.message.channel_id)
+        reply(c, e.message, "Never.")
         #  create(c, Message, e.message.channel_id; content = "Hello Monsieur");
     end
 
