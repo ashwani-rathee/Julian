@@ -8,7 +8,6 @@ c = Client(ENV["DISCORD_TOKEN"]; presence = (game = (name = "Julia", type = AT_G
 
 # Create a handler for the MessageCreate event.
 function handler(c::Client, e::MessageCreate)
-    # Display the message contents.
     println("Received message: $(e.message.content)")
     # Add a reaction to the message.
     if e.message.content == "Hello"
@@ -109,24 +108,13 @@ function handler(c::Client, e::MessageCreate)
         # println(s)
         reply(c, e.message, "``` \n" * s * " \n ```")
     end
-    # data = e.message.content[1:3]
-    # dataint = parse(Int64, data)
-    # if dataint == 1
-    #     println("1")
-    # elseif dataint == 2
-    #     println("2")
-
-    # elseif dataint == 3
-    #     println("3")
-
-    # elseif dataint == 4
-    #     println("4")
-    # elseif dataint == 5
-    #     println("5")
-    # else
-    #     println("Please Choose Instruction between 1 to 5")
-    # end
+    for i in 1:5
+        if parse(Int,e.message.content[7]) == i
+            reply(c, e.message, "$(fetchval(get_channel_messages(c,849191171254779924))[i].content[4:end])")
+        end
+    end
 end
+
 
 # Add the handler.
 add_handler!(c, MessageCreate, handler)
