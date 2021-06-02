@@ -1,1 +1,1 @@
-worker: julia ./src/embed.jl
+worker: julia ./src/bot.jl
