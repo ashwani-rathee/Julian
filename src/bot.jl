@@ -5,8 +5,7 @@ using UnicodePlots
 using Discord
 # Create a client.
 
-DISCORD_TOKEN ="ODQzMDAwMTA5NzgzODQyODE2.YJ9fCA.lMn9HOx4PDdlKrXTLf3d1HXd4zE"
-c = Client(DISCORD_TOKEN; presence = (game = (name = "Julia", type = AT_GAME),))
+c = Client(ENV["DISCORD_TOKEN"]; presence = (game = (name = "Julia", type = AT_GAME),))
 
 page1 = Embed(
     color = 0xfc4445,
