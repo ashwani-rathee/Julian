@@ -4,6 +4,11 @@ authors = ["Ashwani Rathee <ab669522@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Discord = "fcbf000d-02fd-53f1-af91-d952191673d3"
+Firebase = "d5d4129f-b518-43ad-8b57-4a757381be86"
+GitHub = "bc5e4493-9b4d-5f90-b8aa-2b2bcaad7a26"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"

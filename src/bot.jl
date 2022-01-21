@@ -1,221 +1,236 @@
-# include("pages.jl")
 using InteractiveUtils
 using UnicodePlots
-# Import Discord.jl.
 using Discord
+using GitHub
+using HTTP
+using JSON
+using Dates
+using Firebase
+
+
+include("constants.jl")
+
 # Create a client.
+c = Client(String(ENV["DISCORD_TOKEN"]))
 
-c = Client(ENV["DISCORD_TOKEN"]; presence = (game = (name = "Julia", type = AT_GAME),))
+GITHUB_TOKEN = String(ENV["GITHUB_TOKEN"])
+BASE_URL = String(ENV["BASE_URL"])
+DB_URL = String(ENV["DB_URL"])
+header = [
+    "Authorization"=>"token $(GITHUB_TOKEN)",
+    "Accept"=>"application/vnd.github.v3.raw"
+]
+r = HTTP.get(BASE_URL, header);
+response = JSON.json(JSON.parse(String(r.body)));
+open("foo.json","w") do f 
+    write(f, response) 
+end
 
-page1 = Embed(
-    color = 0xfc4445,
-    title = "The Art of War",
-    description = "[Sun Tzu](https://en.wikipedia.org/wiki/Sun_Tzu) ",
-    url ="https://youtu.be/iAbnEUA0wpA",
-    fields = [
-        EmbedField(
-            name = "Laying Plans",
-            value = "
-```md
-1. Sun Tzu said: The art of war is of vital importance to the State.
-2. It is a matter of life and death, a road either to safety or to ruin. Hence it is a subject of inquiry which can on no account be neglected.
-3. The art of war, then, is governed by five constant factors, to be taken into account in one’s deliberations, when seeking to determine the conditions obtaining in the field.
-4. These are:
-    - The Moral Law;
-    - Heaven;
-    - Earth;
-    - The Commander;
-    - Method and discipline.
-5. The Moral Law causes the people to be in complete accord with their ruler, so that they will follow him regardless of their lives, undismayed by any danger.
-6. Heaven signifies night and day, cold and heat, times and seasons.
-```",
-),
-    ],
-    author = EmbedAuthor(
-        name = "Ashwani Rathee",
-        icon_url = "https://i.imgur.com/Ipt5aKr.png",
-    ),
-    thumbnail = EmbedThumbnail(url = "https://i.imgur.com/JB7eKtZ.jpg"),
-    # image = EmbedImage(url = "https://i.imgur.com/Ipt5aKr.png"),
-    # video = EmbedVideo(url = "https://youtu.be/iAbnEUA0wpA", width = 932, height = 524),
-    footer = EmbedFooter(text = "Page 1", icon_url = "https://i.imgur.com/Ipt5aKr.png"),
-)
-page2 = Embed(
-    color = 0x3feee6,
-    title = "The Art of War",
-    description = "[Sun Tzu](https://en.wikipedia.org/wiki/Sun_Tzu) ",
-    url ="https://youtu.be/iAbnEUA0wpA",
-    fields = [
-        EmbedField(
-            name = "Laying Plans",
-            value = "
-```md
-7. Earth comprises distances, great and small; danger  and security; open ground and narrow passes; the  chances of life and death.
-9. The Commander stands for the virtues of  wisdom, sincerely, benevolence, courage and strictness.
-10. By method and discipline are to be understood the  marshaling of the army in its proper subdivisions, the  graduations of rank among the officers, the maintenance of roads by which supplies may reach the army, \n and the control of military expenditure.
-11. These five heads should be familiar to every general:  he who knows them will be victorious; he who  knows them not will fail.
-12. Therefore, in your deliberations, when seeking to  determine the military conditions, let them be made the  basis of a comparison, in this wise:—
-```"
-),
-    ],
-    author = EmbedAuthor(
-        name = "Ashwani Rathee",
-        icon_url = "https://i.imgur.com/Ipt5aKr.png",
-    ),
-    thumbnail = EmbedThumbnail(url = "https://i.imgur.com/JB7eKtZ.jpg"),
-    # image = EmbedImage(url = "https://i.imgur.com/Ipt5aKr.png"),
-    # video = EmbedVideo(url = "https://youtu.be/iAbnEUA0wpA", width = 932, height = 524),
-    footer = EmbedFooter(text = "Page 2", icon_url = "https://i.imgur.com/Ipt5aKr.png"),
-)
-page3 = Embed(
-    color = 0x55bcc9,
-    title = "The Art of War",
-    description = "[Sun Tzu](https://en.wikipedia.org/wiki/Sun_Tzu) ",
-    url ="https://youtu.be/iAbnEUA0wpA",
-    fields = [
-        EmbedField(
-            name = "Laying Plans",
-            value = "
-```md
-13. Some more important questions:-
-    - Which of the two sovereigns is imbued with the Moral law?
-    - Which of the two generals has most ability?
-    - With whom lie the advantages derived from Heaven and Earth?
-    - On which side is discipline most rigorously enforced?
-    - Which army is stronger?
-    - On which side are officers and men more highly trained?
-    - In which army is there the greater consistency  both in reward and punishment?
-14. By means of these seven considerations I can forecast victory or defeat.
-15. The general that hearkens to my counsel and
-acts upon it, will conquer: let such a one be retained in
-command! The general that hearkens not to my counsel nor acts upon it, will suffer defeat:—let such a one
-be dismissed!
+init("foo.json");
+rm("foo.json");
+realdb_init(DB_URL);
+DATA = realdb_get("/Data", auth_header());
+lasttimecheck = DateTime.(DATA["lasttimecheck"]);
 
-```",
-),
-    ],
-    author = EmbedAuthor(
-        name = "Ashwani Rathee",
-        icon_url = "https://i.imgur.com/Ipt5aKr.png",
-    ),
-    thumbnail = EmbedThumbnail(url = "https://i.imgur.com/JB7eKtZ.jpg"),
-    # image = EmbedImage(url = "https://i.imgur.com/Ipt5aKr.png"),
-    # video = EmbedVideo(url = "https://youtu.be/iAbnEUA0wpA", width = 932, height = 524),
-    footer = EmbedFooter(text = "Page 3", icon_url = "https://i.imgur.com/Ipt5aKr.png"),
-)
-page4 = Embed(
-    color = 0x97caef,
-    title = "The Art of War",
-    description = "[Sun Tzu](https://en.wikipedia.org/wiki/Sun_Tzu) ",
-    url ="https://youtu.be/iAbnEUA0wpA",
-    fields = [
-        EmbedField(
-            name = "Laying Plans",
-            value = "
-```md
-16. While heading the profit of my counsel, avail yourself 
-also of any helpful circumstances over and beyond
-the ordinary rules.
-17. According as circumstances are favorable, one
-should modify one’s plans.
-18. All warfare is based on deception.
-19. Hence, when able to attack, we must seem
-unable; when using our forces, we must seem inactive;
-when we are near, we must make the enemy believe we
-are far away; when far away, we must make him
-believe we are near.
-20. Hold out baits to entice the enemy. Feign disorder, and crush him.
-21. If he is secure at all points, be prepared for him. If
-he is in superior strength, evade him.
+whitelist =  delete!(Set(map(x->x["username"],values(DATA["whitelist"]))), nothing);
+gitsubscribelist = delete!(Set(map(x->x["gitid"],values(DATA["gitsublist"]))), nothing);
+ytsubscribelist = delete!(Set(map(x->x["channelid"],values(DATA["ytsublist"]))), nothing);
+mediumsubscribelist = delete!(Set(map(x->x["blogid"],values(DATA["mediumsublist"]))), nothing);
 
-```",
-),
-    ],
-    author = EmbedAuthor(
-        name = "Ashwani Rathee",
-        icon_url = "https://i.imgur.com/Ipt5aKr.png",
-    ),
-    thumbnail = EmbedThumbnail(url = "https://i.imgur.com/JB7eKtZ.jpg"),
-    # image = EmbedImage(url = "https://i.imgur.com/Ipt5aKr.png"),
-    # video = EmbedVideo(url = "https://youtu.be/iAbnEUA0wpA", width = 932, height = 524),
-    footer = EmbedFooter(text = "Page 4", icon_url = "https://i.imgur.com/Ipt5aKr.png"),
-)
-page5 = Embed(
-    color = 0xcafafe,
-    title = "The Art of War",
-    description = "[Sun Tzu](https://en.wikipedia.org/wiki/Sun_Tzu) ",
-    url ="https://youtu.be/iAbnEUA0wpA",
-    fields = [
-        EmbedField(
-            name = "Laying Plans",
-            value = "
-```md
-22. If your opponent is of choleric temper, seek to irritate him.\n Pretend to be weak, that he may grow arrogant.
-23. If he is taking his ease, give him no rest. If his
-forces are united, separate them.
-24. Attack him where he is unprepared, appear
-where you are not expected.
-25. These military devices, leading to victory, must not
-be divulged beforehand.
-26. Now the general who wins a battle makes
-many calculations in his temple ere the battle is fought.
-The general who loses a battle makes but few calculations beforehand.\n Thus do many calculations lead to
-victory, and few calculations to defeat: how much more
-no calculation at all! It is by attention to this point that
-I can foresee who is likely to win or lose.
-```",
-),
-    ],
-    author = EmbedAuthor(
-        name = "Ashwani Rathee",
-        icon_url = "https://i.imgur.com/Ipt5aKr.png",
-    ),
-    thumbnail = EmbedThumbnail(url = "https://i.imgur.com/JB7eKtZ.jpg"),
-    # image = EmbedImage(url = "https://i.imgur.com/Ipt5aKr.png"),
-    # video = EmbedVideo(url = "https://youtu.be/iAbnEUA0wpA", width = 932, height = 524),
-    footer = EmbedFooter(text = "Page 5", icon_url = "https://i.imgur.com/Ipt5aKr.png"),
-)
-page = [page1, page2, page3, page4, page5]
-
-current_page = Int64[]
-embedsids = []
 # Create a handler for the MessageCreate event.
-function handler(c::Client, e::MessageCreate)
-    println("Received message: $(e.message.content)")
+function handler(c::Client, e::MessageCreate) 
+    # People in whitelist can add other people to the whitelist
+    if e.message.author.username in whitelist && startswith(e.message.content, "/whitelist")
+        username =  split(e.message.content, " ")[2]
+        println("Adding to whitelist, ", username)
+        push!(whitelist, username)
+        body =Dict("username" => username)
+        realdb_post("/Data/whitelist", auth_header(), body)
+        println("New member added with name: ",username)
+        println("Whitelist: ", whitelist)
+        return
+    end
+
+    # Remove person from whitelist only I can do that 
+    if e.message.author.username == "murphy" && startswith(e.message.content, "/removefromlist")
+        username = split(e.message.content, " ")[2]
+        println("Removing from whitelist, ", username)
+        delete!(whitelist, username)
+        body =Dict("username" => username)
+        realdb_delete("/Data/whitelist", auth_header(), body)
+        println("Member removed with name:",username)
+        println("Whitelist: ", whitelist)
+        return
+    end
+
+    # To not recieve bot messages and also to avoid message from anyone outside whitelist
+    if e.message.author.username == "volka" && e.message.content !="/hourcheck" || e.message.author.username ∉ whitelist
+        # println("Either a bot messaged or person not in whiteslist")
+        return
+    end
+
+    println("\n\n Received message: $(e.message.content)")
+    # println("Received messagea author: $(e.message.author.username)")
+
+    # To do git,yt, medium subscribe 
+    if e.message.author.username in whitelist 
+        # Create embeds for these methods
+        println("Some subscribe:")
+        if startswith(e.message.content, "/gitsub")
+            #assuming in input format: https://github.com/ashwani-rathee/Firebase.jl
+            ## add a method to check if repo is public or not
+            newsub = join(split(e.message.content," ")[end-1:end],"/")
+            println("Git Subscribing to: ", newsub )
+            push!(gitsubscribelist, newsub)
+            body = Dict("gitid" => newsub)
+            realdb_post("/Data/gitsublist", auth_header(), body)
+            println("Git Subscribed to: ", gitsubscribelist)
+            return
+        elseif startswith(e.message.content, "/ytsub")
+            # assuming in format : https://www.youtube.com/playlist?list=PLnD4WkNzClnyy1ZWhZRWUIzOBsMb2AU76 where last part is playlist name id
+
+            ## add a method to check if playlist is public or not
+            newsub = split(e.message.content, "=")[end]
+            println("Youtube Subscribing to: ", newsub )
+            push!(ytsubscribelist, newsub)
+            body =Dict("channelid" => newsub)
+            realdb_post("/Data/ytsublist", auth_header(), body)
+            println("Youtube Subscribed to: ", ytsubscribelist)
+            return
+        elseif startswith(e.message.content, "/mediumsub")
+            # assuming in format : https://medium.com/feed/@ashwanirathee
+            # assuming in format : ashwanirathee
+            newsub = split(e.message.content, " ")[2]
+            println("Medium Subscribing to: ", newsub )
+            push!(mediumsubscribelist, newsub)
+            body =Dict("blogid" => newsub)
+            realdb_post("/Data/mediumsublist", auth_header(), body)
+            println("Medium Subscribed to: ", mediumsubscribelist)
+            return
+        end
+    end
+
+    function checkgitsubscribes(c, e, gitlist, lt, token, channel)
+        myauth = GitHub.authenticate(token) # don't hardcode your access tokens!
+        sincewhen = "$(lt)" # "2022-01-01T00:00:57.400"
+        myparams = Dict("since" => sincewhen, "page" => 1);
+        for i in gitlist
+            # repo_name = "ashwani-rathee/Firebase.jl"
+            repo_name = i
+            prs, page_data = commits(repo_name; params = myparams, page_limit = 10)
+            if length(prs) == 0
+                return
+            end
+            for i in 1:length(prs)
+                minorembed = Embed(
+                    color = 0xcafafe,
+                    title = "Commit Message: $(prs[i].commit.message)",
+                    description = "Author: [$(prs[i].committer.login)]($(prs[i].committer.html_url)) ",
+                    url ="$(prs[i].html_url)",
+                    fields = [
+                        EmbedField(
+                            name = "Commit Time:",
+                            value = "$(prs[1].commit.committer.date)",),],
+                    author = EmbedAuthor(
+                        name = "$(repo_name)",
+                        icon_url = "https://i.imgur.com/Ipt5aKr.png",
+                    ),
+                )
+                create_message(c, channel; embed=minorembed)
+                
+            end
+        end
+    end
+
+    function checkytsubscribes(c, e, ytlist, lt, token, channel)
+        lastimecheck = lt
+        for i in ytlist
+            response = HTTP.get("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=3&playlistId=$(i)&key=$(token)")
+            results = JSON.parse(String(response.body))
+            for i in results["items"]
+                if  DateTime.(i["snippet"]["publishedAt"][1:end-1]) > DateTime.(lasttimecheck)
+                    minorembed = Embed(
+                        color = 0xcafafe,
+                        title = "Title: $(i["snippet"]["title"])",
+                        description = "Author: [$(i["snippet"]["channelTitle"])]($(i["snippet"]["channelId"])) ",
+                        url ="https://youtu.be/$(i["snippet"]["resourceId"]["videoId"])",
+                        fields = [
+                            EmbedField(
+                                name = "Published At:",
+                                value = " Val : $(i["snippet"]["publishedAt"])",),],
+                        author = EmbedAuthor(
+                            name = "Val: $(i["snippet"]["channelTitle"])",
+                            icon_url = "https://i.imgur.com/Ipt5aKr.png",
+                        ),
+                    )
+                    println("New Vid: ", i["snippet"]["title"])
+                    create_message(c, channel; embed=minorembed)
+                end
+            end
+        end
+
+    end
+
+    function checkmediumsubscribes(c, e, mediumsubscribelist, lt, channel)
+        lastimecheck = lt
+        for i in mediumsubscribelist
+            response = HTTP.get("https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@$(i)")
+            results = JSON.parse(String(response.body))
+            for i in results["items"]
+                if  DateTime.(i["pubDate"], dateformat"yyyy-mm-ss HH:MM:SS") > DateTime.(lasttimecheck)
+                    minorembed = Embed(
+                        color = 0xcafafe,
+                        title = "Title: $(i["title"])",
+                        description = "Author: [$(i["author"])]($(i["author"])) ",
+                        url ="$(i["link"])",
+                        fields = [
+                            EmbedField(
+                                name = "Published At:",
+                                value = "$(i["pubDate"])",),],
+                        author = EmbedAuthor(
+                            name = "$(i["author"])",
+                            icon_url = "https://i.imgur.com/Ipt5aKr.png",
+                        ),
+                    )
+                    println("New Posts:", i["title"])
+                    create_message(c, channel; embed=minorembed)
+                end
+            end
+        end
+    end
+    
+    if e.message.content == "/hourcheck"
+
+        gitsubchannel = DATA["gitsubchannel"]
+        ytsubchannel = DATA["ytsubchannel"]
+        blogchannel = DATA["blogchannel"]
+        checkgitsubscribes(c, e, gitsubscribelist, lasttimecheck, DATA["GITHUB_TOKEN"] , gitsubchannel)
+        checkytsubscribes(c, e, ytsubscribelist, lasttimecheck, DATA["YOUTUBE_TOKEN"],  ytsubchannel)
+        checkmediumsubscribes(c, e, mediumsubscribelist, lasttimecheck, blogchannel)
+        global lasttimecheck = "$(now())";
+        realdb_put("/Data/lasttimecheck", auth_header(), String(lasttimecheck))
+        println("lasttimecheck: $(lasttimecheck)")
+        return
+    end
+
     # Add a reaction to the message.
     if e.message.content == "Hello"
-        # println(e.message.channel_id)
         reply(c, e.message, "Hey Monsieur!!")
-        #  create(c, Message, e.message.channel_id; content = "Hello Monsieur");
     end
 
     if e.message.content == "I failed."
-        # println(e.message.channel_id)
         reply(c, e.message, "Why do we fall sir? So that we can learn to pick ourselves up.")
-        #  create(c, Message, e.message.channel_id; content = "Hello Monsieur");
     end
 
     if e.message.content =="You still haven't given up on me?"
-        # println(e.message.channel_id)
         reply(c, e.message, "Never.")
-        #  create(c, Message, e.message.channel_id; cedit_message(c, 849110011010875423, 849334932572209202; embed = page[3])ontent = "Hello Monsieur");
     end
 
-    if e.message.content == "add 1,1"
-        a = 1
-        b = 1
-        reply(c, e.message, "$(a+b)")
-    end
-
-    if e.message.content == "good boy"
+    if e.message.content == "/meta.init()"
         create(c, Reaction, e.message, '👍')
     end
 
-    if e.message.content == "meta.init()"
-        create(c, Reaction, e.message, '👍')
-    end
-
-    if e.message.content == "meta.test()"
+    if e.message.content == "/meta.test()"
         x = rand(100, 100)
         io = IOBuffer()
         show(IOContext(io, :limit => true, :displaysize => (10, 10)), "text/plain", x)
@@ -234,6 +249,7 @@ function handler(c::Client, e::MessageCreate)
          "
         reply(c, e.message, string)
     end
+
     if e.message.content == "versioninfo()"
         x = versioninfo()
         io = IOBuffer()
@@ -242,7 +258,7 @@ function handler(c::Client, e::MessageCreate)
         reply(c, e.message, s)
     end
 
-    if e.message.content == "graph.histogram()"
+    if e.message.content == "/graph.histogram()"
         x = histogram(randn(1000) .* 0.1, nbins = 15, closed = :left)
         io = IOBuffer()
         show(IOContext(io, :limit => true, :displaysize => (100, 100)), "text/plain", x)
@@ -251,7 +267,7 @@ function handler(c::Client, e::MessageCreate)
         reply(c, e.message, "``` \n" * s * " \n ```")
     end
 
-    if e.message.content == "graph.lineplot()"
+    if e.message.content == "/graph.lineplot()"
         x = lineplot([cos, sin], -π / 2, 2π)
         io = IOBuffer()
         show(IOContext(io, :limit => true, :displaysize => (100, 100)), "text/plain", x)
@@ -260,7 +276,7 @@ function handler(c::Client, e::MessageCreate)
         reply(c, e.message, "``` \n" * s * " \n ```")
     end
 
-    if e.message.content == "graph.scatterplot()"
+    if e.message.content == "/graph.scatterplot()"
         x = scatterplot(randn(50), randn(50), title = "My Scatterplot")
         io = IOBuffer()
         show(IOContext(io, :limit => true, :displaysize => (100, 100)), "text/plain", x)
@@ -269,7 +285,7 @@ function handler(c::Client, e::MessageCreate)
         reply(c, e.message, "``` \n" * s * " \n ```")
     end
 
-    if e.message.content == "graph.barplot()"
+    if e.message.content == "/graph.barplot()"
         x = barplot(
             ["Paris", "New York", "Moskau", "Madrid"],
             [2.244, 8.406, 11.92, 3.165],
@@ -281,88 +297,80 @@ function handler(c::Client, e::MessageCreate)
         # println(s)
         reply(c, e.message, "``` \n" * s * " \n ```")
     end
-    if e.message.content == "embed.setup()"
+
+    if e.message.content == "./rolessetup"
+        message = fetchval(create_message(c, e.message.channel_id;embed=roleembed ))
+        create(c, Reaction, message, "🙋‍♀️")
+        sleep(2)
+        create(c, Reaction, message, "🙋")
+        sleep(2)
+        create(c, Reaction, message, "🧑‍🤝‍🧑")
+        sleep(2)
+        create(c, Reaction, message, "🤷")
+        sleep(2)
+    end
+  
+    if e.message.content == "./setuprules"
         println("Message Id: ",e.message.id) # 849547078085902386
         println("Channel Id: ",e.message.channel_id) # 849324471106142258
-        # edit_message(c, e.message.channel_id, e.message.id; content ="Hello",embed = page[3])
-        # update(c,e.message;embed=page[3])
-        message = fetchval(create_message(c, e.message.channel_id;embed=page[3] ))
+        message = fetchval(create_message(c, e.message.channel_id;embed=ruleembed ))
         println("Bot Message Id: ",message.id) # 849547078085902386
         println("Bot Channel Id: ",message.channel_id) # 849324471106142258
-        create(c, Reaction, message, "⏪")
-        sleep(2)
-        create(c, Reaction, message, "◀️")
-        sleep(2)
-        create(c, Reaction, message, "▶️")
-        sleep(2)
-        create(c, Reaction, message, "⏩")
-        sleep(2)
-        push!(embedsids, message.id)
-        println(embedsids[:])
-        push!(current_page,3)
-        println(current_page[:])
-        
     end
-    if e.message.content[1:5] =="Start"
-        for i in 1:5
-            if parse(Int,e.message.content[7]) == i
-                reply(c, e.message, "$(fetchval(get_channel_messages(c,849191171254779924))[i].content[4:end])")
-            end
-        end
+
+    if e.message.content == "./welcomefrens"
+        println("Message Id: ",e.message.id) # 849547078085902386
+        println("Channel Id: ",e.message.channel_id) # 849324471106142258
+        
+        message = fetchval(upload_file(c, fetchval(get_channel(c, e.message.channel_id)), "assets/welcome.jpg"))
+        sleep(5)
+        println("Bot Message Id: ",message.id) # 849547078085902386
+        println("Bot Channel Id: ",message.channel_id) # 849324471106142258
     end
 end
 
 function handler(c::Client, e::MessageReactionAdd)
-    # message = fetchval(get_channel_message(c,e.channel_id,e.message_id))
-    # currentpage = parse(Int,message.embeds[1].title)
-    # println(currentpage)
-    # println(e.message_id)
-    println("Check 1")
-    if e.user_id !=843000109783842816
-        println("Check 2: ")
-        println(findall( x -> x == e.message_id, embedsids ))
-        i = findall( x -> x == e.message_id, embedsids )[1]
-        println("I:",i)
+    if e.channel_id == 818877472207667231 || e.channel_id == 843007182784954389
+        try 
+            role = genderpronouns[string(e.emoji)] 
 
-        println("Embed IDS:" ,embedsids[:])
-        println("Current Pages:", current_page[:])
-        println("Current Pages I :", current_page[i])
-        if length(findall( x -> x == e.message_id, embedsids )) == 1
-            if e.emoji.name == "⏪"
-                println("Rewind")
-                edit_message(c, e.channel_id, e.message_id; embed = page[1])
-                global current_page[i] = 1
-                println("Rewind:", current_page[i])
+            # get all current roles of a user
+            currentroles =  fetchval(get_guild_member(c, e.guild_id, e.user_id))
+
+            userroles = []
+            for i in currentroles.roles
+                push!(userroles, roles1b[i])
             end
-            if e.emoji.name == "◀️" && current_page[i] != 1
-                println("Back")
-                edit_message(c, e.channel_id, e.message_id; embed = page[(current_page[i] - 1)])
-                global current_page[i] = current_page[i] - 1
-                println("Back:", current_page[i])
+            for i in userroles
+                pos = ["He/Him", "She/Her", "They/Them", "Ask me my gender pronouns"]
+                if i in ["He/Him", "She/Her", "They/Them", "Ask me my gender pronouns"]
+                    remove_guild_member_role(c, e.guild_id, e.user_id, roles1a[i])
+                    delete_user_reaction(c, e.channel_id, e.message_id, opp[i], e.user_id)
+                end
             end
-            if e.emoji.name == "▶️" && current_page[i] != 5
-                # println("Forward")
-                edit_message(c, e.channel_id, e.message_id; embed = page[(current_page[i] +1)])
-                global current_page[i] = current_page[i] + 1
-                println("Next:", current_page[i])
-            end
-            if e.emoji.name == "⏩"
-                println("Fast Forward")
-                edit_message(c, e.channel_id, e.message_id; embed = page[5])
-                global current_page[i] = 5
-                println("Fast Forward:", current_page[i])
-            end
-            delete_user_reaction(c, e.channel_id, e.message_id, e.emoji.name, e.user_id)
+            add_guild_member_role(c, e.guild_id, e.user_id, roles1a[role])
+            return
+        catch
+            delete_user_reaction(c, e.channel_id, e.message_id, string(e.emoji), e.user_id)
+            return
         end
+
+    end  
+end
+
+# scheduled timer
+@async begin
+    while true
+        sleep(Hour(1))
+        create_message(c, 843007182784954389; content = "/hourcheck")
     end
 end
 
 # Add the handler.
 add_handler!(c, MessageCreate, handler)
-
-# Add the handler.
 add_handler!(c, MessageReactionAdd, handler)
+
 # Log in to the Discord gateway.
 open(c)
-# Wait for the client to disconnect.
+
 wait(c)
