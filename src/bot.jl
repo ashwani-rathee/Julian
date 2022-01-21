@@ -103,7 +103,7 @@ function handler(c::Client, e::MessageCreate)
             newsub = split(e.message.content, " ")[2]
             println("Medium Subscribing to: ", newsub )
             push!(mediumsubscribelist, newsub)
-            body =Dict("blogid" => newsub)
+            body = Dict("blogid" => newsub)
             realdb_post("/Data/mediumsublist", auth_header(), body)
             println("Medium Subscribed to: ", mediumsubscribelist)
             return
@@ -200,10 +200,9 @@ function handler(c::Client, e::MessageCreate)
     end
     
     if e.message.content == "/hourcheck"
-
-        gitsubchannel = DATA["gitsubchannel"]
-        ytsubchannel = DATA["ytsubchannel"]
-        blogchannel = DATA["blogchannel"]
+        gitsubchannel = parse(Int64, DATA["gitsubchannel"])
+        ytsubchannel = parse(Int64, DATA["ytsubchannel"])
+        blogchannel = parse(Int64, DATA["blogchannel"])
         checkgitsubscribes(c, e, gitsubscribelist, lasttimecheck, DATA["GITHUB_TOKEN"] , gitsubchannel)
         checkytsubscribes(c, e, ytsubscribelist, lasttimecheck, DATA["YOUTUBE_TOKEN"],  ytsubchannel)
         checkmediumsubscribes(c, e, mediumsubscribelist, lasttimecheck, blogchannel)
