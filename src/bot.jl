@@ -79,7 +79,7 @@ function handler(c::Client, e::MessageCreate)
         if startswith(e.message.content, "/gitsub")
             #assuming in input format: https://github.com/ashwani-rathee/Firebase.jl
             ## add a method to check if repo is public or not
-            newsub = join(split(e.message.content," ")[end-1:end],"/")
+            newsub = join(split(split(e.message.content," ")[2], "/")[end-1:end],"/")
             println("Git Subscribing to: ", newsub )
             push!(gitsubscribelist, newsub)
             body = Dict("gitid" => newsub)
